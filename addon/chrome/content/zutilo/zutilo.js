@@ -34,7 +34,7 @@ var Zutilo = {
         'copyZoteroSelectLink', 'copyZoteroItemURI', 'createBookSection',
         'createBookItem', 'copyChildIDs', 'relocateChildren', 'copyJSON',
         'pasteJSONIntoEmptyFields', 'pasteJSONFromNonEmptyFields',
-        'pasteJSONAll', 'openZoteroItemURI', 'copyItemUUID'
+        'pasteJSONAll', 'openZoteroItemURI', 'copyVimVikiLink'
     ],
 
     _bundle: Cc['@mozilla.org/intl/stringbundle;1'].
@@ -201,14 +201,18 @@ var Zutilo = {
 
     getString: function(name) {
 
-        debug(`getString: ${name}`)
         let match = name.match(/(.*_alt)(\d+)$/)
         if (match === null) {
             return Zutilo._bundle.GetStringFromName(name)
         } else {
             let base = match[1]
             let num = match[2]
-            return Zutilo._bundle.formatStringFromName(base, [num], 1)
+            if (num <= 3) {
+                // first 3 are fixed.
+                return Zutilo._bundle.GetStringFromName(name)
+            } else {
+                return Zutilo._bundle.formatStringFromName(base, [num], 1)
+            }
         }
     }
 }
@@ -225,7 +229,7 @@ Zutilo.Prefs = {
 
     setDefaults: function() {
         var defaults = Services.prefs.getDefaultBranch('extensions.zutilo.');
-        defaults.setIntPref('copyItems_alt_total', 2)
+        defaults.setIntPref('copyItems_alt_total', 5)
 
         Zutilo.refreshItemMenuItems()
         Zutilo.keys.refreshAlts()
@@ -251,6 +255,10 @@ Zutilo.Prefs = {
         for (let altNum = 1; altNum < numAlts + 1; altNum++) {
             defaults.setCharPref('quickCopy_alt' + altNum, '')
         }
+        // first 3 quickCopy are fixed
+        defaults.setCharPref('quickCopy_alt1', 'export=8c06ba7d-dfae-4a64-9d41-0ed4ca94ee58')
+        defaults.setCharPref('quickCopy_alt2', 'export=8c06ba7d-dfae-4a64-9d41-0ed4ca94ee58')
+        defaults.setCharPref('quickCopy_alt3', 'export=a515a220-6fef-45ea-9842-8025dfebcc8f')
         // locateItem engine label
         defaults.setCharPref('locateItemEngine', 'Google Scholar Search')
         // Other preferences

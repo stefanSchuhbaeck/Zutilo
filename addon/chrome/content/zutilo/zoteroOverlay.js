@@ -835,29 +835,42 @@ ZutiloChrome.zoteroOverlay = {
         return true
     },
 
-    copyItemUUID: function() {
-      let links = this._getZoteroItemURI()
-      if (links.length == 0) {
-        return false
-      }
+    copyVimVikiLink: function() {
+        var zitems = this.getSelectedItems();
+        var links = [];
 
-      // zotero://select/library/items/924L89LV
-      let itemIds = [];
-      for (var ii = 0; ii < links.length; ii++) {
-          debug("======")
-          debug(links[ii])
-          var el = links[ii].split("/")
-          debug(`el.length: ${el.length}`)
-          if (el.length > 0){
-            var id = el[el.length -1]
-            debug(id)
-            itemIds.push(id)
-          }
-      }
-      var ret  = itemIds.join('\r\r')
-      debug(`copy: ${ret}`)
-      this._copyToClipboard(ret)
-      return true
+        if (!this.checkItemNumber(zitems, 'regularNoteAttachment1')) {
+            return false;
+        }
+
+        var libraryType
+        var path
+        for (var ii = 0; ii < zitems.length; ii++) {
+
+            debug(JSON.stringify(zitems[ii]))
+
+            libraryType = Zotero.Libraries.get(zitems[ii].libraryID).libraryType
+
+            switch (libraryType) {
+                case 'group':
+                    path = Zotero.URI.getLibraryPath(zitems[ii].libraryID)
+                    break;
+                case 'user':
+                    path = 'library'
+                    break;
+                default:
+                    // Feeds?
+                    continue
+            }
+
+          links.push('[[zotero://select/' + path + '/itemsI/'+ zitems[ii].key + ' |Zt:' + zitems[ii].getField('title') + ']]')
+        }
+
+        var clipboardText = links.join('\r\n');
+
+        this._copyToClipboard(clipboardText)
+
+        return true;
     },
 
     createBookSection: function() {
@@ -1218,6 +1231,7 @@ ZutiloChrome.zoteroOverlay = {
         ZutiloChrome.XULRootElements.push(this.keyset.id);
 
         for (var keyLabel in Zutilo.keys.shortcuts) {
+            debug(`>>${keyLabel}`)
             this.createKey(keyLabel)
         }
     },
