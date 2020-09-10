@@ -35,6 +35,7 @@ function addMenuPreference(menuName, menuFunction) {
 
 function addMenuRadiogroup(menuName, menuFunction) {
     var newRow = document.createElement('row');
+    console.log("hhhhhi")
 
     var newHbox = document.createElement('hbox');
     newHbox.setAttribute('align', 'center');

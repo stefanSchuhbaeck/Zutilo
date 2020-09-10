@@ -793,7 +793,10 @@ ZutiloChrome.zoteroOverlay = {
 
         var link
         for (var ii = 0; ii < zitems.length; ii++) {
+            debug("======")
+            debug(zitems[ii])
             link = Zotero.URI.getItemURI(zitems[ii])
+            debug(link)
             if (link.startsWith(ZOTERO_CONFIG.BASE_URI)) {
                 link = (ZOTERO_CONFIG.WWW_BASE_URL +
                         link.slice(ZOTERO_CONFIG.BASE_URI.length))
@@ -822,12 +825,39 @@ ZutiloChrome.zoteroOverlay = {
         if (links.length == 0) {
             return false
         }
+        //let link = links[0].split("/")
+        //debug(`HELLO: ${link[link.length-1]}`)
 
         var clipboardText = links.join('\r\n')
 
         this._copyToClipboard(clipboardText)
 
         return true
+    },
+
+    copyItemUUID: function() {
+      let links = this._getZoteroItemURI()
+      if (links.length == 0) {
+        return false
+      }
+
+      // zotero://select/library/items/924L89LV
+      let itemIds = [];
+      for (var ii = 0; ii < links.length; ii++) {
+          debug("======")
+          debug(links[ii])
+          var el = links[ii].split("/")
+          debug(`el.length: ${el.length}`)
+          if (el.length > 0){
+            var id = el[el.length -1]
+            debug(id)
+            itemIds.push(id)
+          }
+      }
+      var ret  = itemIds.join('\r\r')
+      debug(`copy: ${ret}`)
+      this._copyToClipboard(ret)
+      return true
     },
 
     createBookSection: function() {

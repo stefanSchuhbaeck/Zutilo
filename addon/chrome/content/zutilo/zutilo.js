@@ -34,7 +34,7 @@ var Zutilo = {
         'copyZoteroSelectLink', 'copyZoteroItemURI', 'createBookSection',
         'createBookItem', 'copyChildIDs', 'relocateChildren', 'copyJSON',
         'pasteJSONIntoEmptyFields', 'pasteJSONFromNonEmptyFields',
-        'pasteJSONAll', 'openZoteroItemURI'
+        'pasteJSONAll', 'openZoteroItemURI', 'copyItemUUID'
     ],
 
     _bundle: Cc['@mozilla.org/intl/stringbundle;1'].
@@ -200,6 +200,8 @@ var Zutilo = {
     },
 
     getString: function(name) {
+
+        debug(`getString: ${name}`)
         let match = name.match(/(.*_alt)(\d+)$/)
         if (match === null) {
             return Zutilo._bundle.GetStringFromName(name)
