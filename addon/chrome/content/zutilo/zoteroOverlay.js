@@ -793,10 +793,10 @@ ZutiloChrome.zoteroOverlay = {
 
         var link
         for (var ii = 0; ii < zitems.length; ii++) {
-            debug("======")
-            debug(zitems[ii])
+            // debug("======")
+            // debug(zitems[ii])
             link = Zotero.URI.getItemURI(zitems[ii])
-            debug(link)
+            // debug(link)
             if (link.startsWith(ZOTERO_CONFIG.BASE_URI)) {
                 link = (ZOTERO_CONFIG.WWW_BASE_URL +
                         link.slice(ZOTERO_CONFIG.BASE_URI.length))
@@ -825,13 +825,9 @@ ZutiloChrome.zoteroOverlay = {
         if (links.length == 0) {
             return false
         }
-        //let link = links[0].split("/")
-        //debug(`HELLO: ${link[link.length-1]}`)
 
         var clipboardText = links.join('\r\n')
-
         this._copyToClipboard(clipboardText)
-
         return true
     },
 

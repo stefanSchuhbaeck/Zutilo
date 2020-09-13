@@ -256,8 +256,11 @@ Zutilo.Prefs = {
             defaults.setCharPref('quickCopy_alt' + altNum, '')
         }
         // first 3 quickCopy are fixed
+        // BTT-vimwiki-links
         defaults.setCharPref('quickCopy_alt1', 'export=8c06ba7d-dfae-4a64-9d41-0ed4ca94ee58')
-        defaults.setCharPref('quickCopy_alt2', 'export=8c06ba7d-dfae-4a64-9d41-0ed4ca94ee58')
+        // BTT-vimwiki-meta
+        defaults.setCharPref('quickCopy_alt2', 'export=02c80513-d14b-4d89-99ef-3736cdd88792')
+        // Better BibTex Citation Key Quick Copy latex cite
         defaults.setCharPref('quickCopy_alt3', 'export=a515a220-6fef-45ea-9842-8025dfebcc8f')
         // locateItem engine label
         defaults.setCharPref('locateItemEngine', 'Google Scholar Search')
